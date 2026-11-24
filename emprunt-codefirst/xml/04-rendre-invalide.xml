@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<S:Envelope
+        xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:bib="http://supnum.mr/bib">
+
+    <S:Body>
+        <bib:rendreLivre>
+            <numeroEmprunt>INVALID-123</numeroEmprunt>
+        </bib:rendreLivre>
+    </S:Body>
+
+</S:Envelope>
