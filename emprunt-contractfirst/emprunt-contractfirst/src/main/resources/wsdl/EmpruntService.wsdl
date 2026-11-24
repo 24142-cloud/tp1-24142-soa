@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+    name="EmpruntService"
+    targetNamespace="http://supnum.mr/bib"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://supnum.mr/bib">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://supnum.mr/bib"
+                    elementFormDefault="qualified">
+
+            <xsd:simpleType name="IsbnType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="97[89]-[0-9]-[0-9]{2,5}-[0-9]{2,6}-[0-9]"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Emprunt">
+                <xsd:sequence>
+                    <xsd:element name="numero" type="xsd:string"/>
+                    <xsd:element name="dateRetour" type="xsd:date"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="emprunterLivre">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="idAdherent" type="xsd:string"/>
+                        <xsd:element name="isbn" type="tns:IsbnType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="emprunterLivreResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="emprunt" type="tns:Emprunt"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="LivreIndisponible">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isbn" type="tns:IsbnType"/>
+                        <xsd:element name="retourPrevu" type="xsd:date"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="rendreLivre">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="numeroEmprunt" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="rendreLivreResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="penalite" type="xsd:decimal"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="emprunterLivreRequest">
+        <wsdl:part name="parameters" element="tns:emprunterLivre"/>
+    </wsdl:message>
+    <wsdl:message name="emprunterLivreResponse">
+        <wsdl:part name="parameters" element="tns:emprunterLivreResponse"/>
+    </wsdl:message>
+    <wsdl:message name="LivreIndisponibleFault">
+        <wsdl:part name="fault" element="tns:LivreIndisponible"/>
+    </wsdl:message>
+
+    <wsdl:message name="rendreLivreRequest">
+        <wsdl:part name="parameters" element="tns:rendreLivre"/>
+    </wsdl:message>
+    <wsdl:message name="rendreLivreResponse">
+        <wsdl:part name="parameters" element="tns:rendreLivreResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="EmpruntPortType">
+        <wsdl:operation name="emprunterLivre">
+            <wsdl:input message="tns:emprunterLivreRequest"/>
+            <wsdl:output message="tns:emprunterLivreResponse"/>
+            <wsdl:fault name="LivreIndisponible" message="tns:LivreIndisponibleFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="rendreLivre">
+            <wsdl:input message="tns:rendreLivreRequest"/>
+            <wsdl:output message="tns:rendreLivreResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="EmpruntSoapBinding" type="tns:EmpruntPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="emprunterLivre">
+            <soap:operation soapAction=""/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input>
+            <wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="LivreIndisponible">
+                <soap:fault name="LivreIndisponible" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="rendreLivre">
+            <soap:operation soapAction=""/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input>
+            <wsdl:output><soap:body use="literal"/></wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="EmpruntService">
+        <wsdl:port name="EmpruntPort" binding="tns:EmpruntSoapBinding">
+            <soap:address location="http://localhost:8080/bib/EmpruntService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

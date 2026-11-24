@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+            xmlns:ns2="http://supnum.mr/bib">
+  <S:Body>
+    <S:Fault>
+      <faultcode>S:Server</faultcode>
+      <faultstring>Livre indisponible</faultstring>
+      <detail>
+        <ns2:LivreIndisponible>
+          <isbn>978-2-10-074444-4</isbn>
+          <retourPrevu>2026-12-02</retourPrevu>
+        </ns2:LivreIndisponible>
+      </detail>
+    </S:Fault>
+  </S:Body>
+</S:Envelope>
